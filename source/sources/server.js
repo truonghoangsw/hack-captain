@@ -15,6 +15,24 @@ var Ball = require('./gamelogic/Ball');
 var Particle = require('./gamelogic/Particle');
 var Player = require('./gamelogic/Player');
 var Logic = require('./gamelogic/Logic');
+const dbConfig = require("./model/db.config.js");
+const Sequelize = require("sequelize");
+const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
+  host: dbConfig.HOST,
+  dialect: dbConfig.dialect,
+  operatorsAliases: false,
+  pool: {
+    max: dbConfig.pool.max,
+    min: dbConfig.pool.min,
+    acquire: dbConfig.pool.acquire,
+    idle: dbConfig.pool.idle
+  }
+});
+const db = {};
+db.Sequelize = Sequelize;
+db.sequelize = sequelize;
+db.sequelize.sync();
+db.users = require('./model/User')(sequelize,Sequelize);
 
 server.listen(port);
 
@@ -38,25 +56,27 @@ io.on('connection', function (socket) {
         viewers[data.roomId].push(data.userId)
     });
 
-    socket.on('clienthandshake', function (data) {
+    socket.on('clienthandshake', async function (data) {
         lobbyUsers.forEach(function (user) {
             var sock = getSocketById(user.connectionId);
             sock.emit('servermessage', {datetime: getFormattedDate(), user: 'Server', message: data.username + ' has joined the lobby', class: 'server'});
         });
 
+        const user = {
+            user_name: data.username,
+            score: 0,
+            display_name: "",
+        };
+        
+        const userNew = await db.users.create(user);
+
         lobbyUsers.push({
             user: data.username,
             localId: data.localId,
             connectionId: socket.id,
-            ongame: false
+            ongame: false,
+            userDetail: userNew
         });
-
-
-//    lobbySockets.push(socket);
-//    lobbyUsers.push({
-//        user: socket.id,
-//        connectionId: socket.id,
-//        ongame: false});
 
         socket.emit('servermessage', {datetime: getFormattedDate(), user: 'Server', message: 'Welcome to the Lobby', class: 'server'});
         socket.emit('serverhandshake', {
