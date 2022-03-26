@@ -40,6 +40,18 @@ Ball.prototype.setVy = function (vy) {
     this.vy = vy;
 }
 
+Ball.prototype.getRadius = function () {
+    return this.radius;
+}
+
+Ball.prototype.setRadius = function (radius) {
+    this.radius = radius;
+}
+
+Ball.prototype.resetRadius = function (radius) {
+    this.radius = 10;
+}
+
 Ball.prototype.getCanvasWidth = function () {
     return this.canvasWidth;
 }

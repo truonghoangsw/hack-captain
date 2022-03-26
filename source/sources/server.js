@@ -138,6 +138,7 @@ io.on('connection', function (socket) {
         sockets.push(p2Socket);
         var logic = new Logic(false);
         logic.init();
+        logic.setStone(data.stone);
         var loops = startGameLoop(sockets, logic);
         pairs.push({
             p1: p1Socket.id,
@@ -151,6 +152,7 @@ io.on('connection', function (socket) {
         socket.emit('gamestart');
         var sockets = new Array();
         var logic = new Logic(true);
+        logic.setStone(data.stone);
         sockets.push(socket);
         logic.init();
         var loops = startGameLoop(sockets, logic);
