@@ -1,7 +1,11 @@
 var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
-var io = require('socket.io')(server)
+const io = require('socket.io')(server, {
+  cors: {
+    origin: '*',
+  }
+});
 //var conf = require('./config.json');
 var port=process.env.PORT || 8080
 
