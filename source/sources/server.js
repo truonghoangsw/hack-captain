@@ -327,7 +327,10 @@ function cancel(socket) {
                     lobbyUsers[k].ongame = false;
                 } else if (lobbyUsers[k].connectionId == p2) {
                     console.log('2.2');
-                    lobbySocket.emit('gameend');
+                    if(lobbySocket == undefined)
+                    {
+                        lobbySocket.emit('gameend');
+                    }
                     lobbyUsers[k].ongame = false;
                 }
             }
