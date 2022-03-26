@@ -9,7 +9,7 @@ const io = require('socket.io')(server, {
   }
 });
 //var conf = require('./config.json');
-var port=process.env.PORT || 8080
+var port=process.env.PORT || 8081
 
 var Ball = require('./gamelogic/Ball');
 var Particle = require('./gamelogic/Particle');
@@ -327,7 +327,7 @@ function cancel(socket) {
                     lobbyUsers[k].ongame = false;
                 } else if (lobbyUsers[k].connectionId == p2) {
                     console.log('2.2');
-                    if(lobbySocket == undefined)
+                    if(lobbySocket != undefined)
                     {
                         lobbySocket.emit('gameend');
                     }
