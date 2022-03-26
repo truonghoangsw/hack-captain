@@ -1,14 +1,38 @@
 var express = require('express');
+var uuid = require('uuid');
+
 var app = express();
 var server = require('http').createServer(app);
-var io = require('socket.io')(server)
+const io = require('socket.io')(server, {
+  cors: {
+    origin: '*',
+  }
+});
 //var conf = require('./config.json');
-var port=process.env.PORT || 8081
+var port=process.env.PORT || 8080
 
 var Ball = require('./gamelogic/Ball');
 var Particle = require('./gamelogic/Particle');
 var Player = require('./gamelogic/Player');
 var Logic = require('./gamelogic/Logic');
+const dbConfig = require("./model/db.config.js");
+const Sequelize = require("sequelize");
+const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
+  host: dbConfig.HOST,
+  dialect: dbConfig.dialect,
+  operatorsAliases: false,
+  pool: {
+    max: dbConfig.pool.max,
+    min: dbConfig.pool.min,
+    acquire: dbConfig.pool.acquire,
+    idle: dbConfig.pool.idle
+  }
+});
+const db = {};
+db.Sequelize = Sequelize;
+db.sequelize = sequelize;
+db.sequelize.sync();
+db.users = require('./model/User')(sequelize,Sequelize);
 
 server.listen(port);
 
@@ -24,30 +48,42 @@ app.get('/', function (req, res) {
 var gameloop, ballloop;
 var lobbyUsers = new Array();
 var pairs = new Array();
+var viewers = {};
 
 io.on('connection', function (socket) {
 
-    socket.on('clienthandshake', function (data) {
+    socket.on('join', function (data) {
+        viewers[data.roomId].push(data.userId)
+    });
+
+    socket.on('clienthandshake', async function (data) {
         lobbyUsers.forEach(function (user) {
             var sock = getSocketById(user.connectionId);
             sock.emit('servermessage', {datetime: getFormattedDate(), user: 'Captain America', message: data.username + ' has joined the force.', class: 'server'});
         });
 
+        const user = {
+            user_name: data.username,
+            score: 0,
+            display_name: "",
+        };
+        
+        const userNew = await db.users.create(user);
+
         lobbyUsers.push({
             user: data.username,
+            localId: data.localId,
             connectionId: socket.id,
-            ongame: false
+            ongame: false,
+            userDetail: userNew
         });
 
-
-//    lobbySockets.push(socket);
-//    lobbyUsers.push({
-//        user: socket.id,
-//        connectionId: socket.id,
-//        ongame: false});
-
-        socket.emit('servermessage', {datetime: getFormattedDate(), user: 'Captain America', message: 'Welcome to Revival Mission #001. We love Iron Man 3000 and we are here to bring him back. Avengers! Assemble.', class: 'server'});
-        socket.emit('serverhandshake', {connectionId: socket.id, user: data.username});
+        socket.emit('servermessage', {datetime: getFormattedDate(), user: 'Captain America', message: 'Welcome to the Lobby', class: 'server'});
+        socket.emit('serverhandshake', {
+            connectionId: socket.id,
+            user: data.username,
+            localId: data.localId,
+        });
         lobbyUsers.forEach(function (lobbyUser) {
             var sock = getSocketById(lobbyUser.connectionId);
             sock.emit('useradded', {users: lobbyUsers});
@@ -138,6 +174,7 @@ io.on('connection', function (socket) {
         sockets.push(p2Socket);
         var logic = new Logic(false);
         logic.init();
+        logic.setStone(data.stone);
         var loops = startGameLoop(sockets, logic);
         pairs.push({
             p1: p1Socket.id,
@@ -151,6 +188,7 @@ io.on('connection', function (socket) {
         socket.emit('gamestart');
         var sockets = new Array();
         var logic = new Logic(true);
+        logic.setStone(data.stone);
         sockets.push(socket);
         logic.init();
         var loops = startGameLoop(sockets, logic);
@@ -167,12 +205,19 @@ io.on('connection', function (socket) {
             sock.emit('useradded', {users: lobbyUsers});
         });
 
+        var roomId = uuid.v1();
+
         pairs.push({
             p1: socket.id,
             p2: null,
             logic: logic,
-            loops: loops
+            loops: loops,
+            roomId: roomId
         });
+
+        viewers.push({
+            roomId: []
+        })
     });
 });
 
@@ -185,7 +230,7 @@ function startGameLoop(sockets, logic) {
                 logic.pause();
                 cancel(sockets[0]);
             }
-
+                
             if (logic.hasWonGame()) {
                 logic.pause();
             }
@@ -200,6 +245,7 @@ function startGameLoop(sockets, logic) {
                 }, 3000);
             }
             for (var i = 0, max = sockets.length; i < max; i++) {
+                console.log(logic)
                 sockets[i].emit('gametick', {
                     player1: logic.getPlayer1(),
                     player2: logic.getPlayer2(),
@@ -254,7 +300,11 @@ function cancel(socket) {
                     lobbyUsers[k].ongame = false;
                 } else if (lobbyUsers[k].connectionId == p1) {
                     console.log('1.2');
-                    lobbySocket.emit('gameend');
+                    console.log(lobbySocket);
+                    if(lobbySocket != undefined){
+                        lobbySocket.emit('gameend');
+
+                    }
                     lobbyUsers[k].ongame = false;
                 }
             }

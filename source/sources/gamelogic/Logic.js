@@ -17,6 +17,7 @@ function Logic(isSingleplayer) {
     this.isPause = false;
     this.maxScore = 2;
     this.collided = false;
+    this.stone = null;
 }
 
 Logic.prototype.init = function () {
@@ -56,6 +57,10 @@ Logic.prototype.increaseBallSpeed = function () {
     } else {
         this.ball.setVx(this.ball.getVx() + 1);
     }
+};
+
+Logic.prototype.setStone = function (stone) {
+    this.stone = stone;
 };
 
 Logic.prototype.setPlayer1Y = function (y) {
@@ -109,8 +114,10 @@ Logic.prototype.calculate = function () {
             this.collided=true;
             this.ball.alternateXSpeed();
             this.ball.calculateYSpeed(this.player2);
+            this.setStoneEffect(this.stone, this.player2);
         } else if (this.ball.getX() >= this.canvasWidth) {
             this.player1.addScore();
+            this.resetState();
             return false;
         }
     } else {
@@ -121,8 +128,10 @@ Logic.prototype.calculate = function () {
             }
             this.ball.alternateXSpeed();
             this.ball.calculateYSpeed(this.player2);
+            this.setStoneEffect(this.stone, this.player1);
         } else if (this.ball.getX() <= 0) {
             this.player2.addScore();
+            this.resetState();
             return false;
         }
     }
@@ -155,28 +164,28 @@ Logic.prototype.calculate = function () {
     return true;
 };
 
+Logic.prototype.resetState = function () {
+    this.player1.resetHeigh();
+    this.player2.resetHeigh();
+    this.ball.resetRadius();
+};
+
 Logic.prototype.calculateAIMovement = function () {
-    // Berechnet die Mitte des Paddels
     var real_y_pos = this.player2.getY() + (this.player2.getHeight() / 2);
     var y_pos = this.player2.getY();
 
-
-    /* Wenn sich Ball von Paddel wegbewegt, werden die Paddel in die Mitte zurückbewegt */
     if (this.ball.getVx() < 0) {
-// Paddel oberhalb der Mitte
         if (real_y_pos < ((this.canvasHeight / 2) - 10)) {
             y_pos += this.getEnemySpeed();
-        } // Paddel unterhalb der Mitte
+        }
         else if (real_y_pos > ((this.canvasHeight / 2) + 10)) {
             y_pos -= this.getEnemySpeed();
         }
     } else if (this.ball.getVx() > 0) {
-// Solange Paddel nicht auf Höhe des Balles ist wird es bewegt
         if (real_y_pos != this.ball.getY()) {
-// Ball oberhalb von Paddel
             if (this.ball.getY() < (real_y_pos - 10)) {
                 y_pos -= this.getEnemySpeed();
-            } // Ball unterhalb von Paddel
+            }
             else if (this.ball.getY() > (real_y_pos + 10)) {
                 y_pos += this.getEnemySpeed();
             }
@@ -208,6 +217,32 @@ Logic.prototype.hasWonGame = function () {
     }
 
     return false;
+};
+
+Logic.prototype.setStoneEffect = function (stone, player) {
+    switch (stone) {
+        case 'space':
+            break;
+        case 'mind':
+            this.ball.setRadius(Math.floor(Math.random() * (15 - 5 + 1) + 5));
+            break;
+        case 'time':
+            this.increaseBallSpeed();
+            this.increaseBallSpeed();
+            this.increaseBallSpeed();
+            break;
+        case 'reality':
+            break;
+        case 'power':
+            if (player.getHeight() >= 50) {
+                player.setHeight(player.getHeight() - 5);
+            }
+            break;
+        case 'soul':
+            break;
+        default:
+            break;
+    }
 };
 
 module.exports = Logic;

@@ -139,7 +139,7 @@ $('document').ready(function () {
     });
 
     $('#btn_singleplayer').on('click', function () {
-        websocket.emit('initiatesingleplayer');
+        websocket.emit('initiatesingleplayer', new {stone: 'timer'});
     });
 
     $('#btn_leftgame').on('click', function (e) {

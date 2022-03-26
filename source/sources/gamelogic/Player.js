@@ -1,6 +1,6 @@
 
 function Player(x, y) {
-    this.height = 50;
+    this.height = 80;
     this.width = 10;
     this.score = 0;
     this.x = x;
@@ -53,6 +53,10 @@ Player.prototype.setScore = function (score) {
 
 Player.prototype.addScore = function () {
     this.score += 1;
+}
+
+Player.prototype.resetHeigh = function () {
+    this.setHeight(80);
 }
 
 Player.prototype.win = function () {
