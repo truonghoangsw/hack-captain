@@ -15,7 +15,7 @@ function Logic(isSingleplayer) {
     this.player2 = null;
     this.isSingleplayer = isSingleplayer;
     this.isPause = false;
-    this.maxScore = 16;
+    this.maxScore = 2;
     this.collided = false;
 }
 
@@ -185,12 +185,29 @@ Logic.prototype.calculateAIMovement = function () {
     this.player2.setY(y_pos);
 };
 
-Logic.prototype.hasWon = function () {
-    if (this.player1.getScore() >= this.maxScore || this.player2.getScore() >= this.maxScore) {
+Logic.prototype.hasWonMatch = function () {
+    //TODO: call api to persite history
+    return this.player1.matchWon() >= 2 || this.player2.matchWon() >= 2;
+};
+
+Logic.prototype.hasWonGame = function () {
+    if (this.player1.getScore() >= this.maxScore) {
+        this.player1.win();
+        
+        this.player1.setScore(0);
+        this.player2.setScore(0);
+
         return true;
-    } else {
-        return false;
+    } else if (this.player2.getScore() >= this.maxScore) {
+        this.player2.win();
+        
+        this.player1.setScore(0);
+        this.player2.setScore(0);
+
+        return true;
     }
+
+    return false;
 };
 
 module.exports = Logic;

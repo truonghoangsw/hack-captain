@@ -5,6 +5,7 @@ function Player(x, y) {
     this.score = 0;
     this.x = x;
     this.y = y;
+    this.gameWonCount = 0;
 }
 
 Player.prototype.getX = function () {
@@ -52,6 +53,14 @@ Player.prototype.setScore = function (score) {
 
 Player.prototype.addScore = function () {
     this.score += 1;
+}
+
+Player.prototype.win = function () {
+    this.gameWonCount += 1;
+}
+
+Player.prototype.matchWon = function () {
+    return this.gameWonCount;
 }
 
 module.exports = Player;

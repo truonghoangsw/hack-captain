@@ -145,7 +145,6 @@ io.on('connection', function (socket) {
             logic: logic,
             loops: loops
         });
-
     });
 
     socket.on('initiatesingleplayer', function (data) {
@@ -179,32 +178,26 @@ io.on('connection', function (socket) {
 
 function startGameLoop(sockets, logic) {
     var gameloop = setInterval(function () {
+        console.log(JSON.stringify(logic))
         if (!logic.isOnPause()) {
             var ok = logic.calculate();
 
-            if (logic.hasWon()) { //reached maxScore
+            if (logic.hasWonMatch()) {
                 logic.pause();
                 cancel(sockets[0]);
-//                cancel(sockets[1]);
+            }
+
+            if (logic.hasWonGame()) {
+                logic.pause();
             }
 
             if (!ok) {
                 console.log('Game end');
                 logic.pause();
-//            clearInterval(gameloop);
-//            clearInterval(ballloop);
+
                 setTimeout(function () {
-                    //a(sockets, logic);
                     logic.unpause();
                     logic.init();
-//                    b(sockets, logic);
-//                    for (var i = 0, max = pairs.length; i < max; i++) {
-//                        if (pairs[i].p1 == sockets[0].id || pairs[i].p2 == sockets[1].id) {
-//                            pairs[i].loops = loops;
-//                            console.log('Updated loops');
-//                            break;
-//                        }
-//                    }
                 }, 3000);
             }
             for (var i = 0, max = sockets.length; i < max; i++) {
@@ -212,7 +205,7 @@ function startGameLoop(sockets, logic) {
                     player1: logic.getPlayer1(),
                     player2: logic.getPlayer2(),
                     ball: logic.getBall(),
-		    collided: logic.isCollided(),
+		            collided: logic.isCollided(),
                     particles: logic.getParticles()
                 });
             }
@@ -223,9 +216,7 @@ function startGameLoop(sockets, logic) {
         logic.increaseBallSpeed();
         console.log("Ballspeed: " + logic.getBall().getVx());
     }, 10000);
-//    // der Client ist verbunden
-//    p1=new Player(0,150);
-//    p2=new Player();
+
     return {ballloop: ballloop, gameloop: gameloop};
 }
 
