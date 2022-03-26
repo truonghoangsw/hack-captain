@@ -3,7 +3,7 @@ var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server)
 //var conf = require('./config.json');
-var port=process.env.PORT || 8080
+var port=process.env.PORT || 8081
 
 var Ball = require('./gamelogic/Ball');
 var Particle = require('./gamelogic/Particle');
@@ -30,7 +30,7 @@ io.on('connection', function (socket) {
     socket.on('clienthandshake', function (data) {
         lobbyUsers.forEach(function (user) {
             var sock = getSocketById(user.connectionId);
-            sock.emit('servermessage', {datetime: getFormattedDate(), user: 'Server', message: data.username + ' has joined the lobby', class: 'server'});
+            sock.emit('servermessage', {datetime: getFormattedDate(), user: 'Captain America', message: data.username + ' has joined the force.', class: 'server'});
         });
 
         lobbyUsers.push({
@@ -46,7 +46,7 @@ io.on('connection', function (socket) {
 //        connectionId: socket.id,
 //        ongame: false});
 
-        socket.emit('servermessage', {datetime: getFormattedDate(), user: 'Server', message: 'Welcome to the Lobby', class: 'server'});
+        socket.emit('servermessage', {datetime: getFormattedDate(), user: 'Captain America', message: 'Welcome to Revival Mission #001. We love Iron Man 3000 and we are here to bring him back. Avengers! Assemble.', class: 'server'});
         socket.emit('serverhandshake', {connectionId: socket.id, user: data.username});
         lobbyUsers.forEach(function (lobbyUser) {
             var sock = getSocketById(lobbyUser.connectionId);
@@ -90,7 +90,7 @@ io.on('connection', function (socket) {
         lobbyUsers.forEach(function (lobbyUser) {
             var sock = getSocketById(lobbyUser.connectionId);
             sock.emit('useradded', {users: lobbyUsers});
-            sock.emit('servermessage', {datetime: getFormattedDate(), user: 'Server', message: lobbyUser.user + ' has left the lobby', class: 'left'});
+            sock.emit('servermessage', {datetime: getFormattedDate(), user: 'Captain America', message: lobbyUser.user + ' has left the lobby', class: 'left'});
         });
     });
 

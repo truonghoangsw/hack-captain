@@ -20,6 +20,7 @@ websocket.on('servermessage', function (data) {
 
 websocket.on('useradded', function (data) {
     $('#userlist').empty();
+    $('#quantity').text('[' + data.users.length + ']');
     for (var i = 0, max = data.users.length; i < max; i++) {
         if (data.users[i].ongame == true) {
             continue;

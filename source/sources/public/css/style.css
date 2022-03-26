@@ -1,5 +1,10 @@
 html
-{ height: 100%;}
+{ 
+  height: 100%;
+  background-color: floralwhite;
+  margin: 0;
+  padding: 0;
+}
 
 *
 { margin: 0;
@@ -8,13 +13,41 @@ html
 body
 { font: normal 85% Arial, Helvetica, sans-serif;
   color: #000;
-  background: #FFF url(../images/background.jpg) repeat;
+  /* background: #FFF url(../images/bg_avenger.jpg) no-repeat; */
+  font-family: cursive;
+}
+
+.container {
+  width: 1200px;
+  margin: 0 auto;
+  
+}
+
+.wrap-header {
+  display: flex;
+  justify-content: space-between;
+  /* font-size: 60px;
+  font-weight: 600; */
+  margin: 10px 173px;
+  align-items: center;
+}
+.wrap-user-info {
+  display: flex;
+  flex-direction: column;
+  margin-top: 7px;
+  text-align: right;
+}
+.header-name-game {
+  font-size: 40px;
+  text-transform: uppercase;
+  margin-left: 270px;
 }
 
 p
 { padding: 0 0 10px 0;
   line-height: 1.7em;
-  font-size: 100% }
+  font-size: 100% 
+}
 
 img
 { border: 0;}
@@ -142,8 +175,11 @@ ul#menu li.current a, ul#menu li:hover a
 { width: 853px;
   overflow: hidden;
   margin: 0 auto;
-  padding: 0 0 20px 0;
-  background: transparent url(../images/transparent_light.png) repeat;} 
+  /* padding: 0 0 20px 0; */
+  padding-top: 10px;
+  background: transparent url(../images/transparent_light.png) repeat;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
 
 .sidebar_container
 { float: left;
@@ -152,7 +188,7 @@ ul#menu li.current a, ul#menu li:hover a
   width: 205px;
   padding-left: 15px;
   padding-right: 15px;
-  background: #3F861B;}
+  background: #595a59a3;}
 
 .sidebar
 { float: left;
@@ -168,7 +204,22 @@ ul#menu li.current a, ul#menu li:hover a
 .sidebar h2
 { font: normal 140% Arial, Helvetica, sans-serif;
   color: #FFF;
-  text-shadow: 0px 1px 0px #285412;}  
+  text-shadow: 0px 1px 0px #285412;
+  margin-bottom: 0;
+}  
+
+.sidebar_item_users {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 4px;
+  border-bottom: 1px solid white;
+}
+
+.sidebar_item_users span {
+  font-size: 15px;
+  color: #fff;
+}
 
 .sidebar h3
 { color: #FFF;
@@ -183,13 +234,13 @@ ul#menu li.current a, ul#menu li:hover a
 
 .list-group-item{
     list-style-type: none;
-    color: #ffb500;
+    color: #fff;
     font-weight: 200;
     cursor: pointer;
 }
 
 .list-group-item.active{
-    color: #ffecbf;
+    color: #fff;
     font-weight: 800;
     cursor: default;
 }
