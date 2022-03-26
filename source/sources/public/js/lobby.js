@@ -136,6 +136,9 @@ $('document').ready(function () {
         var guest = sessionStorage.getItem('lastSelectedUser');
         websocket.emit('clientinvitation', {host: sessionStorage.getItem('user'), guest: guest});
     });
+    $('#btn_top').on('click', function () {
+        websocket.emit('gettop');
+    });
 
     $('#btn_singleplayer').on('click', function () {
         websocket.emit('initiatesingleplayer');

@@ -32,7 +32,8 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 db.sequelize.sync();
-db.users = require('./model/User')(sequelize,Sequelize);
+db.users = require('./model/User')(sequelize, Sequelize);
+db.userhistories = require('./model/UserHistory')(sequelize, Sequelize);
 
 server.listen(port);
 
@@ -173,7 +174,7 @@ io.on('connection', function (socket) {
         sockets.push(p1Socket);
         sockets.push(p2Socket);
         var logic = new Logic(false);
-        logic.init();
+        logic.init(data.p1,data.p2);
         logic.setStone(data.stone);
         var loops = startGameLoop(sockets, logic);
         pairs.push({
@@ -219,6 +220,13 @@ io.on('connection', function (socket) {
             roomId: []
         })
     });
+    socket.on('gettop', async function (data) {
+        var tops = await sequelize.query("select username_won,count(*) as score from user_histories group by username_won order by score desc",
+            {
+                type: Sequelize.SELECT
+            });
+        console.log(tops);
+    });
 });
 
 function startGameLoop(sockets, logic) {
@@ -229,6 +237,11 @@ function startGameLoop(sockets, logic) {
             if (logic.hasWonMatch()) {
                 logic.pause();
                 cancel(sockets[0]);
+                db.userhistories.create({
+                    username_1: logic.player1.username,
+                    username_2: logic.player2.username,
+                    username_won: logic.username_won
+                });
             }
                 
             if (logic.hasWonGame()) {
@@ -241,7 +254,7 @@ function startGameLoop(sockets, logic) {
 
                 setTimeout(function () {
                     logic.unpause();
-                    logic.init();
+                    logic.init(logic.player1.username, logic.player2.username);
                 }, 3000);
             }
             for (var i = 0, max = sockets.length; i < max; i++) {

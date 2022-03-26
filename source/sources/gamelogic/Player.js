@@ -1,11 +1,12 @@
 
-function Player(x, y) {
+function Player(x, y,username) {
     this.height = 80;
     this.width = 10;
     this.score = 0;
     this.x = x;
     this.y = y;
     this.gameWonCount = 0;
+    this.username = username;
 }
 
 Player.prototype.getX = function () {
