@@ -210,7 +210,7 @@ function startGameLoop(sockets, logic) {
                 logic.pause();
                 cancel(sockets[0]);
             }
-
+                
             if (logic.hasWonGame()) {
                 logic.pause();
             }
@@ -225,6 +225,7 @@ function startGameLoop(sockets, logic) {
                 }, 3000);
             }
             for (var i = 0, max = sockets.length; i < max; i++) {
+                console.log(logic)
                 sockets[i].emit('gametick', {
                     player1: logic.getPlayer1(),
                     player2: logic.getPlayer2(),
@@ -279,7 +280,11 @@ function cancel(socket) {
                     lobbyUsers[k].ongame = false;
                 } else if (lobbyUsers[k].connectionId == p1) {
                     console.log('1.2');
-                    lobbySocket.emit('gameend');
+                    console.log(lobbySocket);
+                    if(lobbySocket != undefined){
+                        lobbySocket.emit('gameend');
+
+                    }
                     lobbyUsers[k].ongame = false;
                 }
             }
