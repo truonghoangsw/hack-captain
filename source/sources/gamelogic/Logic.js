@@ -187,13 +187,13 @@ Logic.prototype.calculateAIMovement = function () {
 
 Logic.prototype.hasWonMatch = function () {
     //TODO: call api to persite history
-    return this.player1.matchWon() >= 2 || this.player2.matchWon() >= 2;
+    return this.player1.gameWon() >= 2 || this.player2.gameWon() >= 2;
 };
 
 Logic.prototype.hasWonGame = function () {
     if (this.player1.getScore() >= this.maxScore) {
         this.player1.win();
-        
+
         this.player1.setScore(0);
         this.player2.setScore(0);
 

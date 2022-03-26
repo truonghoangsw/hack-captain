@@ -59,7 +59,7 @@ Player.prototype.win = function () {
     this.gameWonCount += 1;
 }
 
-Player.prototype.matchWon = function () {
+Player.prototype.gameWon = function () {
     return this.gameWonCount;
 }
 

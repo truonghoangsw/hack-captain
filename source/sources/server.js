@@ -178,7 +178,6 @@ io.on('connection', function (socket) {
 
 function startGameLoop(sockets, logic) {
     var gameloop = setInterval(function () {
-        console.log(JSON.stringify(logic))
         if (!logic.isOnPause()) {
             var ok = logic.calculate();
 
