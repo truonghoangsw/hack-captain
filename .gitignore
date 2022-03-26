@@ -5,3 +5,5 @@
 /.vs
 /source/.vs
 .idea/
+/source/sources/node_modules/.bin
+/source/sources/node_modules

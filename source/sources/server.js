@@ -1,4 +1,6 @@
 var express = require('express');
+var uuid = require('uuid');
+
 var app = express();
 var server = require('http').createServer(app);
 const io = require('socket.io')(server, {
@@ -28,8 +30,13 @@ app.get('/', function (req, res) {
 var gameloop, ballloop;
 var lobbyUsers = new Array();
 var pairs = new Array();
+var viewers = {};
 
 io.on('connection', function (socket) {
+
+    socket.on('join', function (data) {
+        viewers[data.roomId].push(data.userId)
+    });
 
     socket.on('clienthandshake', function (data) {
         lobbyUsers.forEach(function (user) {
@@ -178,12 +185,19 @@ io.on('connection', function (socket) {
             sock.emit('useradded', {users: lobbyUsers});
         });
 
+        var roomId = uuid.v1();
+
         pairs.push({
             p1: socket.id,
             p2: null,
             logic: logic,
-            loops: loops
+            loops: loops,
+            roomId: roomId
         });
+
+        viewers.push({
+            roomId: []
+        })
     });
 });
 
