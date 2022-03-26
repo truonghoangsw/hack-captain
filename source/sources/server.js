@@ -39,6 +39,7 @@ io.on('connection', function (socket) {
 
         lobbyUsers.push({
             user: data.username,
+            localId: data.localId,
             connectionId: socket.id,
             ongame: false
         });
@@ -51,7 +52,11 @@ io.on('connection', function (socket) {
 //        ongame: false});
 
         socket.emit('servermessage', {datetime: getFormattedDate(), user: 'Server', message: 'Welcome to the Lobby', class: 'server'});
-        socket.emit('serverhandshake', {connectionId: socket.id, user: data.username});
+        socket.emit('serverhandshake', {
+            connectionId: socket.id,
+            user: data.username,
+            localId: data.localId,
+        });
         lobbyUsers.forEach(function (lobbyUser) {
             var sock = getSocketById(lobbyUser.connectionId);
             sock.emit('useradded', {users: lobbyUsers});
