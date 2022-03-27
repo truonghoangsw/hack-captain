@@ -219,3 +219,22 @@ header nav a.header-btn.history-btn:after {
   text-align: center;
   color: white;
 }
+
+.ranking-page h1 {
+  color: #ffffff;
+  padding: 10px;
+  text-align: center;
+}
+
+#ranking {
+  padding: 20px;
+}
+
+.ranking-table {
+  min-width: 300px;
+}
+
+.ranking-table thead td {
+  font-weight: bold;
+}
+
