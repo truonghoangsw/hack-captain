@@ -1,90 +1,95 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">    
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+<head>
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-        <title>Pong</title>
-        <script src="js/lib/jquery/jquery-2.1.4.min.js" type="text/javascript"></script>
-        <script src="js/lib/jquery_ui/jquery-ui-1.12.0.min.js" type="text/javascript"></script>
-        <link href="css/style.css" rel="stylesheet" type="text/css"/>
-    </head>
+  <title>Pong</title>
+  <script src="js/lib/jquery/jquery-2.1.4.min.js" type="text/javascript"></script>
+  <script src="js/lib/jquery_ui/jquery-ui-1.12.0.min.js" type="text/javascript"></script>
+  <link href="css/style.css" rel="stylesheet" type="text/css"/>
+  <link href="css/custom.css" rel="stylesheet" type="text/css"/>
+</head>
 
-    <body>
-        <div id="main" class="container">
-            <div class="wrap-header">
-                <span class="header-name-game">Captain America</span>
-            </div>
-            <div id="site_content">	
-                <div class="sidebar_container" id="sidebar_container">       
-                    <div class="sidebar">
-                        <div class="sidebar_item">
-                            <div class="sidebar_item_users">
-                                <h2>Users online</h2>
-                                <span id="quantity"></span>
-                            </div>
-                            <ul class="list-group" id="userlist"></ul>
-                        </div>
-                        <div style="position: relative; bottom:0">
-                            <div id="buttons">
-                                <button type="button" class="btn btn-primary" id="btn_invite" disabled>Invite to game</button>
-                                <button type="button" class="btn btn-success" id="btn_singleplayer">Singleplayer</button>
-                                <button type="button" class="btn btn-success" id="btn_top">Tops</button>
-                                <select name="stone-value" id="stone-value">
-                                    <option value="time">time</option>
-                                    <option value="mind">mind</option>
-                                    <option value="power">power</option>
-                                  </select>
-                            </div>
-                        </div><!--close sidebar_item--> 
-                    </div><!--close sidebar-->  
+<body>
+<header>
+  <a href="/lobby.html" class="logo">
+    Captain America Pong
+  </a>
+  <nav>
+    <a href="/lobby.html" class="header-btn play-btn">Play</a>
+    <a href="/ranking.html" class="header-btn hot-btn">Ranking</a>
+  </nav>
+</header>
+<div id="main" class="container">
+  <div id="site_content">
+    <div class="sidebar_container" id="sidebar_container">
+      <div class="sidebar">
+        <div class="sidebar_item">
+          <div class="sidebar_item_users">
+            <h2>Users online</h2>
+            <span id="quantity"></span>
+          </div>
+          <ul class="list-group" id="userlist"></ul>
+        </div>
+        <div id="buttons">
+          <select name="stone-value" id="stone-value">
+            <option value="">Game mode</option>
+            <option value="time">Time</option>
+            <option value="mind">Mind</option>
+            <option value="power">Power</option>
+          </select>
+          <button type="button" class="btn btn-primary" id="btn_invite" disabled>Invite to game</button>
+          <button type="button" class="btn btn-success" id="btn_singleplayer">Singleplayer</button>
+        </div><!--close sidebar_item-->
+      </div><!--close sidebar-->
 
-                </div><!--close sidebar_container-->
+    </div><!--close sidebar_container-->
 
-                <div id="content">
-                    <div id="gamearea">
-                        <div class="wrap-header-info">
-                            <div class="btn_leftgame">
-                                <button type="button" class="btn btn-danger" id="btn_leftgame">Left game</button>
-                            </div>
-                            <div id="scoreboard" class="score-info">
-                                <span id="sp_p1_match"></span>
-                                <div>
-                                    <span id="sp_p1score"></span> : <span id="sp_p2score"></span>
-                                </div>
-                                <span id="sp_p2_match"></span>
-                            </div><br />
-                        </div>
-                        <canvas id="mycanvas" width="853" height="500" style="background-color: #0762AB;"></canvas><br />
-                    </div>
-                    <div class="content_item">
-                        <div id="chatarea">
-                            <h1>Chat</h1>
-                            <div id="messages" style="height: 300px; overflow: auto;"></div>
-                            <label for="txt_chatmessage" class="col-form-label">Message:</label>
-                            <input class="form-control" type="text" placeholder="Your message here" id="txt_chatmessage">
-                                <button type="button" class="btn btn-block" id="btn_sendmessage">
-                                    <span class="glyphicon glyphicon-send" aria-hidden="true"></span>
-                                    Send
-                                </button>
-                        </div>
-                    </div>
-                </div><!--close content--> 
+    <div id="content">
+      <div id="gamearea">
+        <div>
+          <button type="button" class="btn btn-danger" id="btn_leftgame">Left game</button>
+        </div>
+        <div id="scoreboard" class="score-info">
+          <span id="sp_p1_match"></span>
+          <div>
+            <span id="sp_p1score"></span> : <span id="sp_p2score"></span>
+          </div>
+          <span id="sp_p2_match"></span>
+        </div>
+        <br/>
+        <canvas id="mycanvas" width="853" height="500" style="background-color: #c33e16;"></canvas>
+        <br/>
+      </div>
+      <div class="content_item">
+        <div id="chatarea">
+          <h1>Chat</h1>
+          <div id="messages"></div>
+          <label for="txt_chatmessage" class="col-form-label">Message:</label>
+          <input class="form-control" type="text" placeholder="Your message here" id="txt_chatmessage">
+          <button type="button" class="btn btn-block" id="btn_sendmessage">
+            <span class="glyphicon glyphicon-send" aria-hidden="true"></span>
+            Send
+          </button>
+        </div>
+      </div>
+    </div><!--close content-->
 
-            </div><!--close site_content--> 
+  </div><!--close site_content-->
 
-        </div><!--close main-->
+</div><!--close main-->
 
-        <div id="footer">
+<div id="footer">
 
-        </div><!--close footer-->  
+</div><!--close footer-->
 
-        <script src="/socket.io/socket.io.js"></script>
-        <script src="js/lobby.js" type="text/javascript"></script>
-        <script src="js/game.js" type="text/javascript"></script>
-        <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/lobby.js" type="text/javascript"></script>
+<script src="js/game.js" type="text/javascript"></script>
+<script src="bootstrap-3.3.7-dist/js/bootstrap.min.js" type="text/javascript"></script>
 
-    </body>
+</body>
 </html>

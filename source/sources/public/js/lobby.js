@@ -21,6 +21,10 @@ websocket.on('servermessage', function (data) {
 websocket.on('useradded', function (data) {
     $('#userlist').empty();
     $('#quantity').text('[' + data.users.length + ']');
+    if (!data.users.length) {
+        $('#userlist').append('<li>No users online</li>');
+        return;
+    }
     for (var i = 0, max = data.users.length; i < max; i++) {
         if (data.users[i].ongame == true) {
             continue;
@@ -46,7 +50,7 @@ websocket.on('serverhandshake', function (data) {
 });
 
 websocket.on('serverinvitation', function (data) {
-    var confirmed = confirm(data.host + ' lädt Sie ein!');
+    var confirmed = confirm(data.host + ' send you an invitation. Accept?');
     if (confirmed) {
         websocket.emit('initiatemultiplayer', {p1: data.host, p2: sessionStorage.user, stone: data.stone});
     }
@@ -83,7 +87,7 @@ websocket.on('gametick', function (data) {
 });
 
 websocket.on('opponentleft', function () {
-    alert('Dein Gegner hat das Spiel verlassen');
+    alert('Player 2 has left');
 });
 
 
