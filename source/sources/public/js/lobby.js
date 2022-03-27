@@ -89,9 +89,8 @@ websocket.on('gametick', function (data) {
 });
 
 websocket.on('opponentleft', function () {
-    alert('Player 2 has left');
+    alert('Opponent left the game!!!');
 });
-
 
 $('document').ready(function () {
     $('#gamearea').hide();
