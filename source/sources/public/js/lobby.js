@@ -121,7 +121,7 @@ $('document').ready(function () {
     // }
      //sessionStorage.setItem('username', username);
 
-    if(sessionStorage.getItem('username') !== null){
+    if(sessionStorage.getItem('username') === null){
         window.location = '/login.html';
     }else{
         websocket.emit('clienthandshake', {username: sessionStorage.getItem('username')});
