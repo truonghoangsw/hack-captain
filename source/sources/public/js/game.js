@@ -42,6 +42,12 @@ function gameTick(data) {
 }
 
 function draw() {
+    const imageBall = new Image();
+    const imageParticelLeft = new Image();
+    const imageParticelRight = new Image();
+    imageBall.src = '../images/image_8.png';
+    imageParticelLeft.src = '../images/image_1.png';
+    imageParticelRight.src = '../images/image_2.png';
     context2D.clearRect(0, 0, canvas.width, canvas.height);
 
     var padding = 10;
@@ -95,7 +101,7 @@ function draw() {
     //ball
     context2D.beginPath();
     context2D.arc(ball.x, ball.y, ball.radius, 0, 2 * Math.PI, false);
-    context2D.fillStyle = '#fff';
+    context2D.fillStyle = 'green';
     context2D.fill();
     context2D.lineWidth = 1;
     context2D.strokeStyle = '#003300';
@@ -104,7 +110,10 @@ function draw() {
     //player
     context2D.fillStyle = 'white';
     context2D.fillRect(player1.x, player1.y, player1.width, player1.height);
+    context2D.drawImage(imageParticelLeft, player1.x, player1.y, player1.width, player1.height);
+
     context2D.fillRect(player2.x, player2.y, player2.width, player2.height);
+    context2D.drawImage(imageParticelRight, player2.x, player2.y, player2.width, player2.height);
 
     //particles
     for (var i = 0; i < particles.length; i++) {
