@@ -212,3 +212,8 @@ $('document').ready(function () {
         alert(data.message)
     });
 });
+
+function logout() {
+    sessionStorage.clear();
+    window.location.href = '/login.html';
+}
