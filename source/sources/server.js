@@ -385,4 +385,17 @@ app.get('/online', function (req, res) {
     });
 });
 
+app.get('/ranking', function (req, res) {
+    res.send({
+        data: null,
+    });
+});
+
+app.get('/history', function (req, res) {
+    // Truyền username
+    res.send({
+        data: null,
+    });
+});
+
 console.log('Server runs on http://127.0.0.1:' + port + '/ now');
