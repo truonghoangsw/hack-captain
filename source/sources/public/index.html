@@ -1,111 +1,121 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 
-    <head>
-        <title>Pong</title>
-        <meta name="description" content="free website template" />
-        <meta name="keywords" content="enter your keywords here" />
-        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <link rel="stylesheet" type="text/css" href="css/style.css" />
-    </head>
+<head>
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-    <body>
-        <div id="main">
+  <title>Pong</title>
+  <script src="js/lib/jquery/jquery-2.1.4.min.js" type="text/javascript"></script>
+  <script src="js/lib/jquery_ui/jquery-ui-1.12.0.min.js" type="text/javascript"></script>
+  <link href="css/style.css" rel="stylesheet" type="text/css"/>
+  <link href="css/custom.css" rel="stylesheet" type="text/css"/>
+</head>
 
-            <div id="header"></div><!--close header-->	
+<body>
+<header>
+  <a href="/" class="logo">
+    Captain America Pong
+  </a>
+  <nav>
+    <a href="#" class="header-btn play-btn" id="btn_leftgame">Leave Game</a>
+    <a href="/" class="header-btn play-btn" id="btn_play">Play</a>
+    <a href="/ranking.html" class="header-btn hot-btn">Ranking</a>
+    <a href="#" onclick='logout(event)' class="header-btn logout-btn">Logout</a>
+  </nav>
+</header>
+<div id="main" class="container">
+  <div id="site_content" style="display: none">
+    <div class="sidebar_container" id="sidebar_container">
+      <div class="sidebar">
+        <div class="sidebar_item">
+          <div class="sidebar_item_users">
+            <h2>Users online</h2>
+            <span id="quantity"></span>
+          </div>
+          <ul class="list-group" id="userlist"></ul>
+        </div>
+        <div id="buttons">
+          <select name="stone-value" id="stone-value">
+            <option value="">Game mode</option>
+            <option value="time">Time</option>
+            <option value="mind">Mind</option>
+            <option value="power">Power</option>
+            <option value="reality" disabled>Reality (VIP)</option>
+            <option value="space" disabled>Space (VIP)</option>
+            <option value="soul" disabled>Soul (VIP)</option>
+            <option value="7Ball" disabled>7 Dragon Balls (VIP)</option>
+          </select>
+          <button type="button" class="btn btn-primary" id="btn_invite" disabled>Invite to game</button>
+          <button type="button" class="btn btn-success" id="btn_singleplayer">Single player</button>
+        </div><!--close sidebar_item-->
+      </div><!--close sidebar-->
 
-            <div id="menubar">
+    </div><!--close sidebar_container-->
 
-                <div id="welcome">
-                    <h1><a href="#">Welcome To Pong</a></h1>
-                </div><!--close welcome-->
+    <div id="content">
+      <div id="gamearea">
+        <div id="scoreboard" class="score-info">
+            <!-- <div id="sp_p1_match"> -->
+                <div id="sp_p1_match">
+                    <span class="sp_p1_match"></span>
+                    <span class="sp_p1_match ml-2"></span>
+                </div>
+            <!-- </div> -->
+          <div>
+            <span id="sp_p1score"></span> : <span id="sp_p2score"></span>
+          </div>
+          <div id="sp_p2_match">
+            <span class="sp_p1_match"></span>
+            <span class="sp_p1_match ml-2"></span>
+          </div>
+        </div>
+        <br/>
+        <canvas id="mycanvas" width="853" height="500" style="background-color: #c33e16;"></canvas>
+        <br/>
+      </div>
+      <div class="content_item">
+        <div id="chatarea">
+          <h1>Chat</h1>
+          <div id="messages"></div>
+          <label for="txt_chatmessage" class="col-form-label">Message:</label>
+          <input class="form-control" type="text" placeholder="Your message here" id="txt_chatmessage">
+          <button type="button" class="btn btn-block" id="btn_sendmessage">
+            <span class="glyphicon glyphicon-send" aria-hidden="true"></span>
+            Send
+          </button>
+        </div>
+      </div>
+    </div><!--close content-->
 
-                <div id="menu_items">
-                    <ul id="menu">
-                        <li class="current"><a href="index.html">Home</a></li>
-                        <li><a href="lobby.html">Lobby</a></li>
-                        <li><a href="contact.html">Contact Us</a></li>
-                    </ul>
-                </div><!--close menu-->
+  </div><!--close site_content-->
 
-            </div><!--close menubar-->	
+</div><!--close main-->
 
-            <div id="site_content">		
+<div id="footer">
 
-                <div class="sidebar_container">       
+</div><!--close footer-->
+<div class="result-container">
+  <div class="backdrop" id="backdrop" style="display: none"></div>
+  <div id="result-win" class="result" style="display: none">
+    <img src="images/win.png" alt="Win"/>
+    <span>WINNER!!!</span>
+  </div>
+  <div id="result-lose" class="result" style="display: none">
+    <img src="images/lose.png" alt="Lose"/>
+    <span>YOU LOST THE MATCH!!!</span>
+  </div>
+</div>
 
-                    <div class="sidebar">
-                        <div class="sidebar_item">
-                            <h2>New Website</h2>
-                            <p>Welcome to our new website. Please have a look around, any feedback is much appreciated.</p>
-                        </div><!--close sidebar_item--> 
-                    </div><!--close sidebar-->     		
+<div class="select-mode">
 
-                    <div class="sidebar">
-                        <div class="sidebar_item">
-                            <h2>Latest Update</h2>
-                            <h3>October 2013</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque cursus tempor enim.</p>         
-                        </div><!--close sidebar_item--> 
-                    </div><!--close sidebar-->		
+</div>
 
-                    <div class="sidebar">
-                        <div class="sidebar_item">
-                            <h3>September 2013</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque cursus tempor enim.</p>         
-                        </div><!--close sidebar_item--> 
-                    </div><!--close sidebar-->
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/lobby.js" type="text/javascript"></script>
+<script src="js/game.js" type="text/javascript"></script>
+<script src="bootstrap-3.3.7-dist/js/bootstrap.min.js" type="text/javascript"></script>
 
-                    <div class="sidebar">
-                        <div class="sidebar_item">
-                            <h3>August 2013</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque cursus tempor enim.</p>         
-                        </div><!--close sidebar_item--> 
-                    </div><!--close sidebar-->  
-
-                </div><!--close sidebar_container-->		  
-
-                <div id="content">
-
-                    <div class="content_item">
-
-                        <h1>Welcome to Pong</h1> 
-                        <p>Pong is my very first network-capable game based on NodeJS in combination with websockets and client-side JavaScript. Pong is one of the earliest arcade video games. It is a table tennis sports game featuring simple two-dimensional graphics. The game was originally manufactured by Atari, which released it in 1972. Allan Alcorn created Pong as a training exercise assigned to him by Atari co-founder Nolan Bushnell. Bushnell based the idea on an electronic ping-pong game included in the Magnavox Odyssey, which later resulted in a lawsuit against Atari. Surprised by the quality of Alcorn's work, Bushnell and Atari co-founder Ted Dabney decided to manufacture the game.</p>	  
-
-                        <div class="content_images_text">
-
-                            <div class="content_image">
-                                <img src="images/content_image.jpg" alt="content image" />
-                            </div>
-
-                            <div class="image_text">
-                                <p>You can play Pong in singleplayer and multiplayer mode.</p>
-                            </div>	
-
-                        </div>		  
-
-                        <div class="content_container">
-                            <h1>Rules</h1>
-                            <p>Pong is a two-dimensional sports game that simulates table tennis. The player controls an in-game paddle by moving it vertically across the left or right side of the screen. They can compete against either a computer-controlled opponent or another player controlling a second paddle on the opposing side. Players use the paddles to hit a ball back and forth. The goal is for each player to reach eleven points before the opponent; points are earned when one fails to return the ball to the other.</p>
-                        </div><!--close content_container-->
-
-                        <div class="content_container">
-                            <h1>Tech</h1>
-                            <p>Serverseitig kommt NodeJS mit socket.io zum Einsatz. Clientseitig wird ebenfalls socket.io in Verbindung mit jQuery eingesetzt. Die gesamte Anwendung läuft auf einem Docker-Container.</p>          		  
-                        </div><!--close content_container-->		
-
-                    </div><!--close content_item-->
-
-                </div><!--close content--> 
-
-            </div><!--close site_content--> 
-
-        </div><!--close main-->
-
-        <div id="footer">
-            <a href="http://validator.w3.org/check?uri=referer">Valid XHTML</a> | <a href="http://fotogrph.com/">Images</a> | website template by <a href="http://www.araynordesign.co.uk">ARaynorDesign</a>
-        </div><!--close footer-->  
-
-    </body>
+</body>
 </html>

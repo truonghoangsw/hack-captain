@@ -33,8 +33,18 @@ function gameTick(data) {
     $('#sp_p2score').text(player2.score);
 
 
+    var spP1Match = $('#sp_p1_match');
+    var spP2Match = $('#sp_p2_match');
+
+    spP1Match.empty();
+    spP2Match.empty();
+
     for (let i = 1; i <= player1.gameWonCount ; i += 1) {
-        $('#sp_p2_match').append('<span class="sp_p2_match"></span>');
+        spP1Match.append('<span class="sp_p1_match"></span>');
+    }
+
+    for (let i = 1; i <= player2.gameWonCount ; i += 1) {
+        spP2Match.append('<span class="sp_p2_match"></span>');
     }
 
 

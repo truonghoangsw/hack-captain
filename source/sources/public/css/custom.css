@@ -260,3 +260,11 @@ header nav a.header-btn.history-btn:after {
 .ranking-container .cup img {
   width: 250px;
 }
+
+.sp_p1_match + .sp_p1_match {
+  margin-left: 5px;
+}
+
+.sp_p2_match + .sp_p2_match {
+  margin-left: 5px;
+}

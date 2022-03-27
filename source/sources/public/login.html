@@ -14,11 +14,11 @@
 
 <body>
 <header>
-  <a href="/lobby.html" class="logo">
+  <a href="/" class="logo">
     Captain America Pong
   </a>
   <nav>
-    <a href="/lobby.html" class="header-btn play-btn" id="btn_play">Play</a>
+    <a href="/" class="header-btn play-btn" id="btn_play">Play</a>
     <a href="/ranking.html" class="header-btn hot-btn">Ranking</a>
   </nav>
 </header>
@@ -67,7 +67,7 @@
       sessionStorage.setItem('user', data.username);
       sessionStorage.setItem('username', data.username);
       sessionStorage.setItem('connectionId', data.connectionId);
-      window.location = "/lobby.html";
+      window.location = "/";
     } else {
       alert('Sorry! No Web Storage support..');
     }
