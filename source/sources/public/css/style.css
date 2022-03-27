@@ -187,8 +187,16 @@ ul#menu li.current a, ul#menu li:hover a
   /* padding: 0 0 20px 0; */
   padding-top: 10px;
   background: transparent url(../images/transparent_light.png) repeat;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  box-shadow: rgba(247, 245, 245, 0.24) 0px 3px 8px;
   border-radius: 10px;
+}
+
+.sp_p1_match {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #fff;
 }
 
 .sidebar_container
@@ -267,6 +275,7 @@ ul#menu li.current a, ul#menu li:hover a
   align-items: center;
   justify-content: space-between;
   margin-top: 10px;
+  margin: 10px 10px 0 10px;
 }
 
 .wrap-header-info {
@@ -274,7 +283,11 @@ ul#menu li.current a, ul#menu li:hover a
 }
 
 #sp_p1_match , #sp_p2_match {
-  font-size: 35px;
+  display: flex;
+}
+
+.ml-2 {
+  margin-left: 4px;
 }
 
 #content

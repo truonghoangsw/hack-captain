@@ -31,8 +31,8 @@ function gameTick(data) {
     particles = data.particles;
     $('#sp_p1score').text(player1.score);
     $('#sp_p2score').text(player2.score);
-    $('#sp_p1_match').text(player1.gameWonCount);
-    $('#sp_p2_match').text(player2.gameWonCount);
+    // $('#sp_p1_match').append('<span class="sp_p1_match"></span>');
+    // $('#sp_p2_match').text(player2.gameWonCount);
 
     if(data.collided){
 	var audio = new Audio('audio_file.mp3');
@@ -101,7 +101,7 @@ function draw() {
     //ball
     context2D.beginPath();
     context2D.arc(ball.x, ball.y, ball.radius, 0, 2 * Math.PI, false);
-    context2D.fillStyle = 'green';
+    context2D.fillStyle = '#fff';
     context2D.fill();
     context2D.lineWidth = 1;
     context2D.strokeStyle = '#003300';

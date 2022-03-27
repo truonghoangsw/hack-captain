@@ -79,8 +79,8 @@ websocket.on('gameend', function (data) {
     $('#sidebar_container').show();
     $('#sp_p1score').text('');
     $('#sp_p2score').text('');
-    $('#sp_p1_match').text('');
-    $('#sp_p2_match').text('');
+    // $('#sp_p1_match').text('');
+    // $('#sp_p2_match').text('');
 });
 
 //Singleplayer-specific
