@@ -83,7 +83,8 @@ io.on('connection', function (socket) {
         viewers[data.roomId].push(data.userId)
     });
 
-    socket.on('userlogin',async function(data){
+    socket.on('userlogin', async function (data) {
+        console.log(data);
         const userExists = await db.users.findOne({
             where: {
                 user_name: data.username
@@ -101,9 +102,12 @@ io.on('connection', function (socket) {
             var userSave = await db.users.create(user);
 
             onRespone({ username:userSave.user_name });
-        }else{
+        } else {
+            console.log(data);
+            console.log(userExists);
             bcrypt.compare(data.password, userExists.password, function (err, res) {
-                if(!err){
+                console.log(res);
+                if(!err && res){
                     console.log("Logged in");
                     //socket.emit("clienthandshake", {username:data.username});
                     socket.emit("loginsuccess",{username:data.username});
