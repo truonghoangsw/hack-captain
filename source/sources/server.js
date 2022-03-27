@@ -143,7 +143,7 @@ io.on('connection', function (socket) {
         for (var i = 0, max = lobbyUsers.length; i < max; i++) {
             if (lobbyUsers[i].user === data.guest) {
                 var guestSocket = getSocketById(lobbyUsers[i].connectionId);
-                guestSocket.emit('serverinvitation', {host: data.host});
+                guestSocket.emit('serverinvitation', {host: data.host, stone: data.stone});
                 break;
             }
         }
