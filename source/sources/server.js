@@ -106,6 +106,8 @@ io.on('connection', function (socket) {
             var userSave = await db.users.create(user);
 
             onRespone({ username:userSave.user_name });
+
+            socket.emit("loginsuccess",{username:data.username});
         } else {
             console.log(data);
             console.log(userExists);
