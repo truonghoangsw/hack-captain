@@ -12,7 +12,7 @@ const io = require('socket.io')(server, {
 });
 
 //var conf = require('./config.json');
-var port=process.env.PORT || 8081
+var port=process.env.PORT || 80
 
 var Ball = require('./gamelogic/Ball');
 var Particle = require('./gamelogic/Particle');
@@ -106,6 +106,8 @@ io.on('connection', function (socket) {
             var userSave = await db.users.create(user);
 
             onRespone({ username:userSave.user_name });
+
+            socket.emit("loginsuccess",{username:data.username});
         } else {
             console.log(data);
             console.log(userExists);

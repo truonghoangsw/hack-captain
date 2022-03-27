@@ -125,7 +125,7 @@ $('document').ready(function () {
             if (data.users[i].ongame == true) {
                 continue;
             }
-    
+
             if (data.users[i].user == sessionStorage.getItem('user')) {
                 $('#userlist').append('<li class="list-group-item active">' + data.users[i].user + '</li>');
             } else if (data.users[i].ongame == true) {
@@ -145,7 +145,8 @@ $('document').ready(function () {
 
     if(sessionStorage.getItem('username') === null){
         window.location = '/login.html';
-    }else{
+    } else {
+        $('#site_content').show();
         websocket.emit('clienthandshake', {username: sessionStorage.getItem('username')});
     }
 
@@ -211,3 +212,8 @@ $('document').ready(function () {
         alert(data.message)
     });
 });
+
+function logout() {
+    sessionStorage.clear();
+    window.location.href = '/login.html';
+}
