@@ -1,13 +1,15 @@
 var express = require('express');
 var uuid = require('uuid');
-
+const session = require('express-session');
 var app = express();
 var server = require('http').createServer(app);
+const bcrypt = require('bcryptjs');
 const io = require('socket.io')(server, {
   cors: {
     origin: '*',
   }
 });
+
 //var conf = require('./config.json');
 var port=process.env.PORT || 8080
 
@@ -17,6 +19,13 @@ var Player = require('./gamelogic/Player');
 var Logic = require('./gamelogic/Logic');
 const dbConfig = require("./model/db.config.js");
 const Sequelize = require("sequelize");
+
+// const bodyParser = require('body-parser');
+
+// app.use(bodyParser.urlencoded({extension: true}));
+// app.use(bodyParser.json());
+
+// config db
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
   dialect: dbConfig.dialect,
@@ -34,6 +43,17 @@ db.sequelize = sequelize;
 db.sequelize.sync();
 db.users = require('./model/User')(sequelize,Sequelize);
 
+// controller 
+
+// const userController = require('./controller/user.controller');
+
+// session
+app.use(session({
+    resave: true, 
+    saveUninitialized: true, 
+    secret: 'pongsecret', 
+    cookie: { maxAge: 60000 }}));
+
 server.listen(port);
 
 // statische Dateien ausliefern
@@ -43,7 +63,14 @@ app.get('/', function (req, res) {
     // so wird die Datei index.html ausgegeben
     res.sendFile(__dirname + '/public/index.html');
 });
-
+app.get('/', function (req, res) {
+    // so wird die Datei index.html ausgegeben
+    res.sendFile(__dirname + '/public/index.html');
+});
+// app.get("/login",userController.login());
+// app.get("/register",userController.register());
+// app.get("/logout",userController.logout());
+// app.get("/gets",userController.getAll());
 
 var gameloop, ballloop;
 var lobbyUsers = new Array();
@@ -56,26 +83,76 @@ io.on('connection', function (socket) {
         viewers[data.roomId].push(data.userId)
     });
 
-    socket.on('clienthandshake', async function (data) {
+    socket.on('userlogin',async function(data){
+        const userExists = await db.users.findOne({
+            where: {
+                user_name: data.username
+            }
+        });
+        var salt = bcrypt.genSaltSync(10);
+        console.log(userExists)
+        if (userExists === null) {
+            let user = {
+                user_name: data.username,
+                password: bcrypt.hashSync(data.password, salt),
+                score: 0,
+                display_name: ''
+            };
+            var userSave = await db.users.create(user);
+
+            onRespone({ username:userSave.user_name });
+        }else{
+            bcrypt.compare(data.password, userExists.password, function (err, res) {
+                if(!err){
+                    console.log("Logged in");
+                    //socket.emit("clienthandshake", {username:data.username});
+                    socket.emit("loginsuccess",{username:data.username});
+                }else{
+                    console.log("Failed");
+                    socket.emit("loginmessage", {status: false, message: "user or password is not valid."})
+                }
+            })
+        }
+       
+    });
+    function onRespone(data){
         lobbyUsers.forEach(function (user) {
             var sock = getSocketById(user.connectionId);
             sock.emit('servermessage', {datetime: getFormattedDate(), user: 'Server', message: data.username + ' has joined the lobby', class: 'server'});
         });
-
-        const user = {
-            user_name: data.username,
-            score: 0,
-            display_name: "",
-        };
-        
-        const userNew = await db.users.create(user);
 
         lobbyUsers.push({
             user: data.username,
             localId: data.localId,
             connectionId: socket.id,
             ongame: false,
-            userDetail: userNew
+        });
+
+        socket.emit('servermessage', {datetime: getFormattedDate(), user: 'Server', message: 'Welcome to the Lobby', class: 'server'});
+        console.log(data)
+        socket.emit('serverhandshake', {
+            connectionId: socket.id,
+            user: data.username,
+            localId: data.localId,
+        });
+        console.log("Success 2")
+        lobbyUsers.forEach(function (lobbyUser) {
+            var sock = getSocketById(lobbyUser.connectionId);
+            sock.emit('useradded', {users: lobbyUsers});
+        });
+    }
+    socket.on('clienthandshake', async function (data) {
+        console.log("Success")
+        lobbyUsers.forEach(function (user) {
+            var sock = getSocketById(user.connectionId);
+            sock.emit('servermessage', {datetime: getFormattedDate(), user: 'Server', message: data.username + ' has joined the lobby', class: 'server'});
+        });
+
+        lobbyUsers.push({
+            user: data.username,
+            localId: data.localId,
+            connectionId: socket.id,
+            ongame: false,
         });
 
         socket.emit('servermessage', {datetime: getFormattedDate(), user: 'Server', message: 'Welcome to the Lobby', class: 'server'});
@@ -84,6 +161,7 @@ io.on('connection', function (socket) {
             user: data.username,
             localId: data.localId,
         });
+        console.log("Success 2")
         lobbyUsers.forEach(function (lobbyUser) {
             var sock = getSocketById(lobbyUser.connectionId);
             sock.emit('useradded', {users: lobbyUsers});
@@ -355,4 +433,4 @@ function getFormattedDate() {
     return d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
 }
 
-console.log('Server runs on http://127.0.0.1:' + port + '/ now');
+console.log('Server runs on http://127.0.0.1:' + port + '/ now')

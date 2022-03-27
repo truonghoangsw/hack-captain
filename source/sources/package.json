@@ -3,7 +3,10 @@
     "description": "An easy pong implementation on NodeJS and Websockets",
     "author": "ellistheellice",
     "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "body-parser": "^1.19.2",
         "express": "4.17.1",
+        "express-session": "^1.17.2",
         "mysql2": "^2.3.3",
         "sequelize": "^6.17.0",
         "socket.io": "3.0.3",
