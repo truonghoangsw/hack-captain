@@ -79,6 +79,10 @@ h3
   overflow: hidden;
 }
 
+#messages::-webkit-scrollbar {
+  display: none;
+}
+
 #messages:hover {
   overflow-y: scroll;
 }
@@ -228,7 +232,17 @@ ul#menu li.current a, ul#menu li:hover a
 
 .sidebar_item
 { 
-    font: normal 100% Arial, Helvetica, sans-serif;
+  height: 220px;
+  overflow: hidden;
+  font: normal 100% Arial, Helvetica, sans-serif;
+}
+
+.sidebar_item::-webkit-scrollbar {
+  display: none;
+}
+
+.sidebar_item:hover {
+  overflow-y: scroll;
 }
 
 .sidebar h2
