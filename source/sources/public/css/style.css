@@ -74,6 +74,15 @@ h3
 { font: normal 130% Arial, Helvetica, sans-serif;
 }
 
+#messages {
+  height: 100px;
+  overflow: hidden;
+}
+
+#messages:hover {
+  overflow-y: scroll;
+}
+
 h4, h5, h6
 { margin: 0;
   padding: 0 0 0px 0;
@@ -191,7 +200,7 @@ ul#menu li.current a, ul#menu li:hover a
   border-radius: 10px;
 }
 
-.sp_p1_match {
+.sp_p1_match , .sp_p2_match{
   display: block;
   width: 10px;
   height: 10px;

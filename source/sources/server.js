@@ -136,7 +136,7 @@ io.on('connection', function (socket) {
             ongame: false,
         });
 
-        socket.emit('servermessage', {datetime: getFormattedDate(), user: 'Server', message: 'Welcome to the Lobby', class: 'server'});
+        socket.emit('servermessage', {datetime: getFormattedDate(), user: 'Server', message: 'Our dear friend Iron Man has gone and his sacrifice left a shoe in the Avenger game to fill. We are on the mission to seek the Revival of the legendary Iron Man under a brand new identity. Avengers! Assemble.', class: 'server'});
         console.log(data)
         socket.emit('serverhandshake', {
             connectionId: socket.id,
@@ -163,7 +163,7 @@ io.on('connection', function (socket) {
             ongame: false,
         });
 
-        socket.emit('servermessage', {datetime: getFormattedDate(), user: 'Captain America', message: 'Welcome to the Lobby', class: 'server'});
+        socket.emit('servermessage', {datetime: getFormattedDate(), user: 'Captain America', message: 'Our dear friend Iron Man has gone and his sacrifice left a shoe in the Avenger game to fill. We are on the mission to seek the Revival of the legendary Iron Man under a brand new identity. Avengers! Assemble.', class: 'server'});
         socket.emit('serverhandshake', {
             connectionId: socket.id,
             user: data.username,

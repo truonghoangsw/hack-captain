@@ -31,13 +31,25 @@ function gameTick(data) {
     particles = data.particles;
     $('#sp_p1score').text(player1.score);
     $('#sp_p2score').text(player2.score);
-    // $('#sp_p1_match').append('<span class="sp_p1_match"></span>');
-    // $('#sp_p2_match').text(player2.gameWonCount);
+
+
+    for (let i = 1; i <= player1.gameWonCount ; i += 1) {
+        $('#sp_p2_match').append('<span class="sp_p2_match"></span>');
+    }
+
+
+    // $('.sp_p2_match').each((index, element) => {
+    //     if (index === 1) {
+    //         $(this).css('backgroundColor', 'green');
+    //     }
+    // });
+    // $('.sp_p2_match').css("backgroundColor", "green");
+
 
     if(data.collided){
 	var audio = new Audio('audio_file.mp3');
         audio.play();
-   }
+    }
     draw();
 }
 
