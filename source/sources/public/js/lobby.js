@@ -48,8 +48,7 @@ websocket.on('serverhandshake', function (data) {
 websocket.on('serverinvitation', function (data) {
     var confirmed = confirm(data.host + ' lädt Sie ein!');
     if (confirmed) {
-        var stone = $('#stone-value').children("option:selected").val();
-        websocket.emit('initiatemultiplayer', {p1: data.host, p2: sessionStorage.user, stone: stone});
+        websocket.emit('initiatemultiplayer', {p1: data.host, p2: sessionStorage.user, stone: data.stone});
     }
 });
 
@@ -91,7 +90,6 @@ websocket.on('opponentleft', function () {
 $('document').ready(function () {
     $('#gamearea').hide();
     $('#btn_leftgame').hide();
-
 
     //todo: Use a better solution
     var username = '';
@@ -136,7 +134,8 @@ $('document').ready(function () {
 
     $('#btn_invite').on('click', function () {
         var guest = sessionStorage.getItem('lastSelectedUser');
-        websocket.emit('clientinvitation', {host: sessionStorage.getItem('user'), guest: guest});
+        var stone = $('#stone-value').children("option:selected").val();
+        websocket.emit('clientinvitation', {host: sessionStorage.getItem('user'), guest: guest, stone: stone});
     });
     $('#btn_top').on('click', function () {
         websocket.emit('gettop');
