@@ -97,14 +97,35 @@ $('document').ready(function () {
     $('#btn_leftgame').hide();
     $('#btn_play').show();
 
-    //todo: Use a better solution
-    var username = '';
-    while (username == '') {
-        username = prompt('Please enter your username!', '');
-    }
-    sessionStorage.setItem('username', username);
+    websocket.on('useradded', function (data) {
+        $('#userlist').empty();
+        for (var i = 0, max = data.users.length; i < max; i++) {
+            if (data.users[i].ongame == true) {
+                continue;
+            }
+    
+            if (data.users[i].user == sessionStorage.getItem('user')) {
+                $('#userlist').append('<li class="list-group-item active">' + data.users[i].user + '</li>');
+            } else if (data.users[i].ongame == true) {
+                continue;
+            } else {
+                $('#userlist').append('<li class="list-group-item">' + data.users[i].user + '</li>');
+            }
+        }
+    });
 
-    websocket.emit('clienthandshake', {username: username});
+    //todo: Use a better solution
+    // var username = '';
+    // while (username == '') {
+    //     username = prompt('Please enter your username!', '');
+    // }
+     //sessionStorage.setItem('username', username);
+
+    if(sessionStorage.getItem('username') !== null){
+        window.location = '/login.html';
+    }else{
+        websocket.emit('clienthandshake', {username: sessionStorage.getItem('username')});
+    }
 
 
 
@@ -163,5 +184,8 @@ $('document').ready(function () {
 //            alert('Escape');
         websocket.emit('cancelgame');
 //        }
+    });
+    websocket.on("loginmess", function(data){
+        alert(data.message)
     });
 });
