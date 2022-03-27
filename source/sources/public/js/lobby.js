@@ -65,9 +65,31 @@ websocket.on('gamestart', function (data) {
     $('#gamearea').show();
     $('#chatarea').hide();
     $('#sidebar_container').hide();
+    $('#result-win').hide();
+    $('#result-lose').hide();
+    $('#backdrop').hide();
+});
+
+$('#backdrop').on('click', function () {
+   window.location.reload();
 });
 
 websocket.on('gameend', function (data) {
+    if (data) {
+        var user = sessionStorage.getItem('user');
+        var resultWinEl = $('#result-win');
+        var resultLoseEl = $('#result-lose');
+        var backdropEl = $('#backdrop');
+        backdropEl.show();
+        if (user === data.username_won) {
+            resultWinEl.show();
+            resultLoseEl.hide();
+        } else {
+            resultWinEl.hide();
+            resultLoseEl.show();
+        }
+        return;
+    }
 //    myLayout.open('east');
 //    myLayout.open('north');
 //    myLayout.open('south');

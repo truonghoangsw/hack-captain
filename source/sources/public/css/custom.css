@@ -1,15 +1,17 @@
 body {
-  background: #222 !important;
   color: #fafafa !important;
   min-height: 100vh;
   width: 100%;
+  background-image: url("../images/bg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 header {
   display: flex;
   padding: 20px;
   justify-content: space-between;
-  background: #171717;
+  background: rgba(23, 23, 23, 0.8);
 }
 
 header .logo {
@@ -137,5 +139,32 @@ header nav a.header-btn.history-btn:after {
 
 #site_content {
   margin-top: 30px;
-  background: none;
+  background: rgba(23, 23, 23, 0.6);
+}
+
+.result-container .backdrop {
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 3;
+}
+
+.result-container .result {
+  position: fixed;
+  z-index: 5;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.result-container .result span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  font-size: 32px;
+  transform: translate(-50%, -50%);
 }
