@@ -47,7 +47,8 @@ websocket.on('serverhandshake', function (data) {
 websocket.on('serverinvitation', function (data) {
     var confirmed = confirm(data.host + ' lädt Sie ein!');
     if (confirmed) {
-        websocket.emit('initiatemultiplayer', {p1: data.host, p2: sessionStorage.user});
+        var stone = $('#stone-value').children("option:selected").val();
+        websocket.emit('initiatemultiplayer', {p1: data.host, p2: sessionStorage.user, stone: stone});
     }
 });
 
@@ -141,7 +142,8 @@ $('document').ready(function () {
     });
 
     $('#btn_singleplayer').on('click', function () {
-        websocket.emit('initiatesingleplayer');
+        var stone = $('#stone-value').children("option:selected").val();
+        websocket.emit('initiatesingleplayer', {stone: stone});
     });
 
     $('#btn_leftgame').on('click', function (e) {
