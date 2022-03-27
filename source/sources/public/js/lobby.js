@@ -21,6 +21,10 @@ websocket.on('servermessage', function (data) {
 websocket.on('useradded', function (data) {
     $('#userlist').empty();
     $('#quantity').text('[' + data.users.length + ']');
+    if (!data.users.length) {
+        $('#userlist').append('<li>No users online</li>');
+        return;
+    }
     for (var i = 0, max = data.users.length; i < max; i++) {
         if (data.users[i].ongame == true) {
             continue;
@@ -46,7 +50,7 @@ websocket.on('serverhandshake', function (data) {
 });
 
 websocket.on('serverinvitation', function (data) {
-    var confirmed = confirm(data.host + ' lädt Sie ein!');
+    var confirmed = confirm(data.host + ' send you an invitation. Accept?');
     if (confirmed) {
         websocket.emit('initiatemultiplayer', {p1: data.host, p2: sessionStorage.user, stone: data.stone});
     }
@@ -57,6 +61,7 @@ websocket.on('gamestart', function (data) {
 //    myLayout.close('north');
 //    myLayout.close('south');
     $('#btn_leftgame').show();
+    $('#btn_play').hide();
     $('#gamearea').show();
     $('#chatarea').hide();
     $('#sidebar_container').hide();
@@ -67,6 +72,7 @@ websocket.on('gameend', function (data) {
 //    myLayout.open('north');
 //    myLayout.open('south');
     $('#btn_leftgame').hide();
+    $('#btn_play').show();
     $('#btn_invite').attr('disabled', 'true');
     $('#chatarea').show();
     $('#gamearea').hide();
@@ -83,13 +89,13 @@ websocket.on('gametick', function (data) {
 });
 
 websocket.on('opponentleft', function () {
-    alert('Dein Gegner hat das Spiel verlassen');
+    alert('Opponent left the game!!!');
 });
-
 
 $('document').ready(function () {
     $('#gamearea').hide();
     $('#btn_leftgame').hide();
+    $('#btn_play').show();
 
     //todo: Use a better solution
     var username = '';
@@ -152,6 +158,7 @@ $('document').ready(function () {
     });
 
     $('#btn_leftgame').on('click', function (e) {
+        event.preventDefault();
 //        if (e.keyCode == 27) { //ESC
 //            alert('Escape');
         websocket.emit('cancelgame');

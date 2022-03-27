@@ -139,7 +139,7 @@ io.on('connection', function (socket) {
     });
 
     socket.on('clientinvitation', function (data) {
-//        console.log(data.host + ' invites ' + data.guest);
+       console.log(data.host + ' invites ' + data.guest);
         for (var i = 0, max = lobbyUsers.length; i < max; i++) {
             if (lobbyUsers[i].user === data.guest) {
                 var guestSocket = getSocketById(lobbyUsers[i].connectionId);
