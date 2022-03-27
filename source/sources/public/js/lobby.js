@@ -192,13 +192,8 @@ $('document').ready(function () {
     });
 
     $('#btn_singleplayer').on('click', function () {
-        var stoneArray = [
-            'time',
-            'mind',
-            'power'
-        ];
-        var randomNumber = Math.floor(Math.random()*stoneArray.length);
-        websocket.emit('initiatesingleplayer', {stone: stoneArray[randomNumber]});
+        var stone = $('#stone-value').children("option:selected").val();
+        websocket.emit('initiatesingleplayer', {stone: stone});
     });
 
     $('#btn_leftgame').on('click', function (e) {
