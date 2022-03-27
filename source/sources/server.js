@@ -239,7 +239,11 @@ function startGameLoop(sockets, logic) {
 
             if (logic.hasWonMatch()) {
                 logic.pause();
-                cancel(sockets[0]);
+                cancel(sockets[0], {
+                    username_1: logic.player1.username,
+                    username_2: logic.player2.username,
+                    username_won: logic.username_won
+                });
                 db.userhistories.create({
                     username_1: logic.player1.username,
                     username_2: logic.player2.username,
@@ -281,7 +285,7 @@ function startGameLoop(sockets, logic) {
     return {ballloop: ballloop, gameloop: gameloop};
 }
 
-function cancel(socket) {
+function cancel(socket, result = null) {
     for (var i = 0, max = pairs.length; i < max; i++) {
         var p1 = pairs[i].p1;
         var p2 = pairs[i].p2;
@@ -291,7 +295,7 @@ function cancel(socket) {
             clearInterval(pairs[i].loops.ballloop);
             clearInterval(pairs[i].loops.gameloop);
             pairs.splice(i, 1);
-            socket.emit('gameend');
+            socket.emit('gameend', result);
             for (var i = 0, max = lobbyUsers.length; i < max; i++) {
                 if (lobbyUsers[i].connectionId == socket.id) {
 //                    console.log('Setting ongame');
@@ -311,15 +315,16 @@ function cancel(socket) {
 
                 if (lobbyUsers[k].connectionId == p2) {
                     console.log('1.1');
-                    lobbySocket.emit('opponentleft');
-                    lobbySocket.emit('gameend');
+                    if (!result) {
+                        lobbySocket.emit('opponentleft');
+                    }
+                    lobbySocket.emit('gameend', result);
                     lobbyUsers[k].ongame = false;
                 } else if (lobbyUsers[k].connectionId == p1) {
                     console.log('1.2');
                     console.log(lobbySocket);
                     if(lobbySocket != undefined){
-                        lobbySocket.emit('gameend');
-
+                        lobbySocket.emit('gameend', result);
                     }
                     lobbyUsers[k].ongame = false;
                 }
@@ -338,21 +343,20 @@ function cancel(socket) {
 
                 if (lobbyUsers[k].connectionId == p1) {
                     console.log('2.1');
-                    lobbySocket.emit('opponentleft');
-                    lobbySocket.emit('gameend');
+                    if (!result) {
+                        lobbySocket.emit('opponentleft');
+                    }
+                    lobbySocket.emit('gameend', result);
                     lobbyUsers[k].ongame = false;
                 } else if (lobbyUsers[k].connectionId == p2) {
                     console.log('2.2');
-                    if(lobbySocket != undefined)
-                    {
-                        lobbySocket.emit('gameend');
+                    if(lobbySocket != undefined) {
+                        lobbySocket.emit('gameend', result);
                     }
                     lobbyUsers[k].ongame = false;
                 }
             }
             console.log('Clearing intervals 2');
-            console.log(pairs[i].loops.ballloop);
-            console.log(pairs[i].loops.gameloop);
             clearInterval(pairs[i].loops.ballloop);
             clearInterval(pairs[i].loops.gameloop);
             pairs.splice(i, 1);

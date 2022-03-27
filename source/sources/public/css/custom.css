@@ -119,6 +119,7 @@ header nav a.header-btn.history-btn:after {
   height: 40px;
   line-height: 40px;
   margin-bottom: 10px;
+  text-align: center;
 }
 
 .sidebar {
