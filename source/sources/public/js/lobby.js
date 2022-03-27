@@ -61,6 +61,7 @@ websocket.on('gamestart', function (data) {
 //    myLayout.close('north');
 //    myLayout.close('south');
     $('#btn_leftgame').show();
+    $('#btn_play').hide();
     $('#gamearea').show();
     $('#chatarea').hide();
     $('#sidebar_container').hide();
@@ -71,6 +72,7 @@ websocket.on('gameend', function (data) {
 //    myLayout.open('north');
 //    myLayout.open('south');
     $('#btn_leftgame').hide();
+    $('#btn_play').show();
     $('#btn_invite').attr('disabled', 'true');
     $('#chatarea').show();
     $('#gamearea').hide();
@@ -94,6 +96,7 @@ websocket.on('opponentleft', function () {
 $('document').ready(function () {
     $('#gamearea').hide();
     $('#btn_leftgame').hide();
+    $('#btn_play').show();
 
     //todo: Use a better solution
     var username = '';
@@ -156,6 +159,7 @@ $('document').ready(function () {
     });
 
     $('#btn_leftgame').on('click', function (e) {
+        event.preventDefault();
 //        if (e.keyCode == 27) { //ESC
 //            alert('Escape');
         websocket.emit('cancelgame');
