@@ -49,7 +49,7 @@ app.get('/', function (req, res) {
 var gameloop, ballloop;
 var lobbyUsers = new Array();
 var pairs = new Array();
-var viewers = {};
+var viewers = new Array();
 
 io.on('connection', function (socket) {
 
@@ -189,7 +189,7 @@ io.on('connection', function (socket) {
         socket.emit('gamestart');
         var sockets = new Array();
         var logic = new Logic(true);
-        logic.setStone(data.stone);
+        logic.setStone(data?.stone);
         sockets.push(socket);
         logic.init();
         var loops = startGameLoop(sockets, logic);
