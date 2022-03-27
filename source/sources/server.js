@@ -385,4 +385,42 @@ app.get('/online', function (req, res) {
     });
 });
 
+app.get('/ranking', async function (req, res) {
+    var tops = await sequelize.query("select username_won,count(*) as score from user_histories group by username_won order by score desc",
+    {
+        type: Sequelize.SELECT
+    });
+    res.send({
+        data: tops,
+    });
+});
+
+app.get('/history', async function (req, res) {
+    // Truyền username
+    var history = await sequelize.query("select * from user_histories where username_1 = " + req.userName + "or username_2 = " + req.useName + "order by createdat desc",
+    {
+        type: Sequelize.SELECT
+    });
+    res.send({
+        data: history,
+    });
+});
+
+
+app.get('/getuser', async function (req, res) {
+    // Truyền username
+    console.log(req)
+    var winCount = await sequelize.query("select Count(*) from user_histories where username_won = '" + req.query.username + "'",
+    {
+        type: Sequelize.SELECT
+    });
+    var user = await sequelize.query("select * from users where user_name = '" + req.query.username + "' limit 1",
+    {
+        type: Sequelize.SELECT
+    });
+    user.winCount = winCount;
+    res.send({
+        data: user,
+    });
+});
 console.log('Server runs on http://127.0.0.1:' + port + '/ now');
