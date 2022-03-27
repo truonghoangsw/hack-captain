@@ -18,3 +18,8 @@ $('document').ready(function () {
   getRanking();
 });
 
+function logout(event) {
+  event.preventDefault();
+  sessionStorage.clear();
+  window.location.href = '/login.html';
+}

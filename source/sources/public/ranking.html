@@ -21,13 +21,19 @@
   <nav>
     <a href="/lobby.html" class="header-btn play-btn" id="btn_play">Play</a>
     <a href="/ranking.html" class="header-btn hot-btn">Ranking</a>
+    <a href="#" onclick='logout(event)' class="header-btn logout-btn">Logout</a>
   </nav>
 </header>
 <div id="main" class="container ranking-page">
   <div id="site_content">
       <h1>Ranking</h1>
-      <div id="ranking">
-        Loading...
+      <div class="ranking-container">
+        <div id="ranking">
+          Loading...
+        </div>
+        <div class="cup">
+          <img src="images/cup.png" alt="Cup"/>
+        </div>
       </div>
   </div><!--close site_content-->
 
