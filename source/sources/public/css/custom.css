@@ -76,7 +76,8 @@ header nav a.header-btn.play-btn:after {
   background-position: -34px -73px;
 }
 
-header nav a.header-btn.hot-btn {
+header nav a.header-btn.hot-btn,
+header nav a.header-btn.logout-btn {
   padding-left: 56px;
 }
 
@@ -85,6 +86,13 @@ header nav a.header-btn.hot-btn:after {
   width: 19px;
   height: 25px;
   background-position: -5px -73px;
+}
+
+header nav a.header-btn.logout-btn:after {
+  left: 25px;
+  width: 30px;
+  height: 25px;
+  background-position: -4px -200px;
 }
 
 header nav a.header-btn.login-btn {
@@ -227,7 +235,8 @@ header nav a.header-btn.history-btn:after {
 }
 
 #ranking {
-  padding: 20px;
+  flex: 1;
+  padding: 20px 20px 20px 50px;
 }
 
 .ranking-table {
@@ -238,3 +247,16 @@ header nav a.header-btn.history-btn:after {
   font-weight: bold;
 }
 
+.ranking-container {
+  display: flex;
+}
+
+.ranking-container .cup {
+  width: 400px;
+  text-align: center;
+  padding-top: 50px;
+}
+
+.ranking-container .cup img {
+  width: 250px;
+}

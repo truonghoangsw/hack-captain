@@ -208,7 +208,8 @@ $('document').ready(function () {
     });
 });
 
-function logout() {
+function logout(event) {
+    event.preventDefault();
     sessionStorage.clear();
     window.location.href = '/login.html';
 }
