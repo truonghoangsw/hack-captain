@@ -2,6 +2,7 @@ var express = require('express');
 var uuid = require('uuid');
 
 var app = express();
+var cors = require('cors');
 var server = require('http').createServer(app);
 const io = require('socket.io')(server, {
   cors: {
@@ -37,6 +38,8 @@ db.userhistories = require('./model/UserHistory')(sequelize, Sequelize);
 
 server.listen(port);
 
+app.use(cors());
+
 // statische Dateien ausliefern
 app.use(express.static(__dirname + '/public'));
 
@@ -68,7 +71,7 @@ io.on('connection', function (socket) {
             score: 0,
             display_name: "",
         };
-        
+
         const userNew = await db.users.create(user);
 
         lobbyUsers.push({
@@ -243,7 +246,7 @@ function startGameLoop(sockets, logic) {
                     username_won: logic.username_won
                 });
             }
-                
+
             if (logic.hasWonGame()) {
                 logic.pause();
             }
@@ -375,5 +378,11 @@ function getFormattedDate() {
     var d = new Date();
     return d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
 }
+
+app.get('/online', function (req, res) {
+    res.send({
+        users: lobbyUsers,
+    });
+});
 
 console.log('Server runs on http://127.0.0.1:' + port + '/ now');
