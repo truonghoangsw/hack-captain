@@ -1,4 +1,4 @@
-﻿################################################################################
+################################################################################
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
@@ -7,3 +7,5 @@
 .idea/
 /source/sources/node_modules/.bin
 /source/sources/node_modules
+package-lock.json
+source/package-lock.json
