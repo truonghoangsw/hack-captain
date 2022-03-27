@@ -6,27 +6,18 @@ module.exports = (sequelize, Sequelize) => {
           allowNull: false,
           primaryKey: true
         },
-        player_one_id: {
-          type: DataTypes.STRING,
+        username_1: {
+          type: Sequelize.STRING,
           allowNull: false
         },
-        player_two_id: {
-          type: DataTypes.STRING
+        username_2: {
+            type: Sequelize.STRING,
+            allowNull: false
         },
-        won_or_losed: {
-          type: DataTypes.NUMBER
-        },
-        time: {
-            type: Date
-        },
-        user_one_name: {
-          type: DataTypes.STRING,
-          allowNull: false
-        },
-        user_two_name: {
-          type: DataTypes.STRING,
-          allowNull: false
-        },
+        username_won: {
+            type: Sequelize.STRING,
+            allowNull: false
+        }
       });
       return UserHistory;
 };

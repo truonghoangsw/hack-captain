@@ -2,6 +2,7 @@ var express = require('express');
 var uuid = require('uuid');
 
 var app = express();
+var cors = require('cors');
 var server = require('http').createServer(app);
 const io = require('socket.io')(server, {
   cors: {
@@ -32,9 +33,12 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 db.sequelize.sync();
-db.users = require('./model/User')(sequelize,Sequelize);
+db.users = require('./model/User')(sequelize, Sequelize);
+db.userhistories = require('./model/UserHistory')(sequelize, Sequelize);
 
 server.listen(port);
+
+app.use(cors());
 
 // statische Dateien ausliefern
 app.use(express.static(__dirname + '/public'));
@@ -48,7 +52,7 @@ app.get('/', function (req, res) {
 var gameloop, ballloop;
 var lobbyUsers = new Array();
 var pairs = new Array();
-var viewers = {};
+var viewers = new Array();
 
 io.on('connection', function (socket) {
 
@@ -67,7 +71,7 @@ io.on('connection', function (socket) {
             score: 0,
             display_name: "",
         };
-        
+
         const userNew = await db.users.create(user);
 
         lobbyUsers.push({
@@ -173,7 +177,7 @@ io.on('connection', function (socket) {
         sockets.push(p1Socket);
         sockets.push(p2Socket);
         var logic = new Logic(false);
-        logic.init();
+        logic.init(data.p1,data.p2);
         logic.setStone(data.stone);
         var loops = startGameLoop(sockets, logic);
         pairs.push({
@@ -188,7 +192,7 @@ io.on('connection', function (socket) {
         socket.emit('gamestart');
         var sockets = new Array();
         var logic = new Logic(true);
-        logic.setStone(data.stone);
+        logic.setStone(data?.stone);
         sockets.push(socket);
         logic.init();
         var loops = startGameLoop(sockets, logic);
@@ -219,6 +223,13 @@ io.on('connection', function (socket) {
             roomId: []
         })
     });
+    socket.on('gettop', async function (data) {
+        var tops = await sequelize.query("select username_won,count(*) as score from user_histories group by username_won order by score desc",
+            {
+                type: Sequelize.SELECT
+            });
+        console.log(tops);
+    });
 });
 
 function startGameLoop(sockets, logic) {
@@ -229,8 +240,13 @@ function startGameLoop(sockets, logic) {
             if (logic.hasWonMatch()) {
                 logic.pause();
                 cancel(sockets[0]);
+                db.userhistories.create({
+                    username_1: logic.player1.username,
+                    username_2: logic.player2.username,
+                    username_won: logic.username_won
+                });
             }
-                
+
             if (logic.hasWonGame()) {
                 logic.pause();
             }
@@ -241,7 +257,7 @@ function startGameLoop(sockets, logic) {
 
                 setTimeout(function () {
                     logic.unpause();
-                    logic.init();
+                    logic.init(logic.player1.username, logic.player2.username);
                 }, 3000);
             }
             for (var i = 0, max = sockets.length; i < max; i++) {
@@ -362,5 +378,11 @@ function getFormattedDate() {
     var d = new Date();
     return d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
 }
+
+app.get('/online', function (req, res) {
+    res.send({
+        users: lobbyUsers,
+    });
+});
 
 console.log('Server runs on http://127.0.0.1:' + port + '/ now');

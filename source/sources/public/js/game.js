@@ -10,18 +10,21 @@ var headerheight = 0;
 
 $(function () {
     $('#mycanvas').on('mousemove', function (e) {
-        websocket.emit('move', {ypos: e.pageY - headerheight - 25});
+        websocket.emit('move', {ypos: e.pageY - headerheight - 94});
     });
     headerheight = $('#header').height();
 });
 
 function gameTick(data) {
+    console.log('data', data);
     player1 = data.player1;
     player2 = data.player2;
     ball = data.ball;
     particles = data.particles;
     $('#sp_p1score').text(player1.score);
     $('#sp_p2score').text(player2.score);
+    $('#sp_p1_match').text(player1.gameWonCount);
+    $('#sp_p2_match').text(player2.gameWonCount);
 
     if(data.collided){
 	var audio = new Audio('audio_file.mp3');

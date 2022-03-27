@@ -35,6 +35,12 @@
                             <div id="buttons">
                                 <button type="button" class="btn btn-primary" id="btn_invite" disabled>Invite to game</button>
                                 <button type="button" class="btn btn-success" id="btn_singleplayer">Singleplayer</button>
+                                <button type="button" class="btn btn-success" id="btn_top">Tops</button>
+                                <select name="stone-value" id="stone-value">
+                                    <option value="time">time</option>
+                                    <option value="mind">mind</option>
+                                    <option value="power">power</option>
+                                  </select>
                             </div>
                         </div><!--close sidebar_item--> 
                     </div><!--close sidebar-->  
@@ -43,11 +49,17 @@
 
                 <div id="content">
                     <div id="gamearea">
-                        <canvas id="mycanvas" width="853" height="500" style="background-color: #c33e16;"></canvas><br />
-                        <div id="scoreboard">
-                            <span id="sp_p1score"></span> : <span id="sp_p2score"></span>
+                        <div>
+                            <button type="button" class="btn btn-danger" id="btn_leftgame">Left game</button>
+                        </div>
+                        <div id="scoreboard" class="score-info">
+                            <span id="sp_p1_match"></span>
+                            <div>
+                                <span id="sp_p1score"></span> : <span id="sp_p2score"></span>
+                            </div>
+                            <span id="sp_p2_match"></span>
                         </div><br />
-                        <button type="button" class="btn btn-danger" id="btn_leftgame">Left game</button>
+                        <canvas id="mycanvas" width="853" height="500" style="background-color: #c33e16;"></canvas><br />
                     </div>
                     <div class="content_item">
                         <div id="chatarea">

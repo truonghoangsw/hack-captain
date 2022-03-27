@@ -18,12 +18,13 @@ function Logic(isSingleplayer) {
     this.maxScore = 2;
     this.collided = false;
     this.stone = null;
+    this.username_won = null;
 }
 
-Logic.prototype.init = function () {
+Logic.prototype.init = function (player1,player2) {
     if (this.player1 == null) {
-        this.player1 = new Player(0, 150);
-        this.player2 = new Player((this.canvasWidth - 10), 150);
+        this.player1 = new Player(0, 150,player1);
+        this.player2 = new Player((this.canvasWidth - 10), 150,player2);
         this.ball = new Ball(10, 30, 150, this.getBallStartSpeed(), 0, this.canvasWidth, this.canvasHeight);
     } else {
         this.player1.setY(150);
@@ -196,6 +197,7 @@ Logic.prototype.calculateAIMovement = function () {
 
 Logic.prototype.hasWonMatch = function () {
     //TODO: call api to persite history
+    this.username_won = this.player1.gameWon() >= 2 ? this.player1.username : (this.player2.gameWon() >= 2 ? this.player2.username : null);
     return this.player1.gameWon() >= 2 || this.player2.gameWon() >= 2;
 };
 

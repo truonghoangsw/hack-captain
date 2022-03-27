@@ -256,6 +256,12 @@ ul#menu li.current a, ul#menu li:hover a
     color: grey;
 }
 
+.score-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 #content
 { width: 578px;
   margin-bottom: 20px;

@@ -48,7 +48,8 @@ websocket.on('serverhandshake', function (data) {
 websocket.on('serverinvitation', function (data) {
     var confirmed = confirm(data.host + ' lädt Sie ein!');
     if (confirmed) {
-        websocket.emit('initiatemultiplayer', {p1: data.host, p2: sessionStorage.user});
+        var stone = $('#stone-value').children("option:selected").val();
+        websocket.emit('initiatemultiplayer', {p1: data.host, p2: sessionStorage.user, stone: stone});
     }
 });
 
@@ -73,6 +74,8 @@ websocket.on('gameend', function (data) {
     $('#sidebar_container').show();
     $('#sp_p1score').text('');
     $('#sp_p2score').text('');
+    $('#sp_p1_match').text('');
+    $('#sp_p2_match').text('');
 });
 
 //Singleplayer-specific
@@ -83,8 +86,6 @@ websocket.on('gametick', function (data) {
 websocket.on('opponentleft', function () {
     alert('Dein Gegner hat das Spiel verlassen');
 });
-
-
 
 
 $('document').ready(function () {
@@ -137,9 +138,13 @@ $('document').ready(function () {
         var guest = sessionStorage.getItem('lastSelectedUser');
         websocket.emit('clientinvitation', {host: sessionStorage.getItem('user'), guest: guest});
     });
+    $('#btn_top').on('click', function () {
+        websocket.emit('gettop');
+    });
 
     $('#btn_singleplayer').on('click', function () {
-        websocket.emit('initiatesingleplayer', new {stone: 'timer'});
+        var stone = $('#stone-value').children("option:selected").val();
+        websocket.emit('initiatesingleplayer', {stone: stone});
     });
 
     $('#btn_leftgame').on('click', function (e) {
