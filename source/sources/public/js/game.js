@@ -10,13 +10,21 @@ var headerheight = 0;
 
 $(function () {
     $('#mycanvas').on('mousemove', function (e) {
-        websocket.emit('move', {ypos: e.pageY - headerheight - 94});
+        websocket.emit('move', {ypos: e.pageY - headerheight - 194});
     });
     headerheight = $('#header').height();
 });
 
+// $(function () {
+//     $('#site_content').on('keypress', function(e) {
+//         if (e.which == '13') {
+//             websocket.emit('move', {ypos: e.pageY - headerheight - 94});
+//         }
+//     });
+//     headerheight = $('#header').height();
+// })
+
 function gameTick(data) {
-    console.log('data', data);
     player1 = data.player1;
     player2 = data.player2;
     ball = data.ball;

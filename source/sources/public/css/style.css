@@ -62,6 +62,11 @@ h1, h2, h3, h4, h5, h6
   letter-spacing: -1px;
   margin: 0 0 10px 0;}
 
+.btn_leftgame{
+  display: flex;
+  justify-content: end;
+}
+
 h2
 { font: normal 165% Arial, Helvetica, sans-serif;}
 
@@ -175,7 +180,8 @@ ul#menu li.current a, ul#menu li:hover a
   box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px;  }
 
 #site_content
-{ width: 853px;
+{ 
+  width: 853px;
   overflow: hidden;
   margin: 0 auto;
   /* padding: 0 0 20px 0; */
@@ -260,10 +266,20 @@ ul#menu li.current a, ul#menu li:hover a
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: 10px;
+}
+
+.wrap-header-info {
+  padding: 0 10px;
+}
+
+#sp_p1_match , #sp_p2_match {
+  font-size: 35px;
 }
 
 #content
-{ width: 578px;
+{ 
+  /* width: 578px; */
   margin-bottom: 20px;
   float: left;}
 

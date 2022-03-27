@@ -204,17 +204,13 @@ Logic.prototype.hasWonMatch = function () {
 Logic.prototype.hasWonGame = function () {
     if (this.player1.getScore() >= this.maxScore) {
         this.player1.win();
-
         this.player1.setScore(0);
         this.player2.setScore(0);
-
         return true;
     } else if (this.player2.getScore() >= this.maxScore) {
         this.player2.win();
-        
         this.player1.setScore(0);
         this.player2.setScore(0);
-
         return true;
     }
 
