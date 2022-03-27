@@ -183,9 +183,11 @@ header nav a.header-btn.history-btn:after {
 }
 
 .login-form .form-field input {
-  width: 100%;
+  width: 428px;
   height: 36px;
   line-height: 36px;
+  padding: 0 10px;
+  border-radius: 4px;
 }
 
 .login-form label {
